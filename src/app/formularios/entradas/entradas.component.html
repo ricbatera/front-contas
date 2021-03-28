@@ -1,0 +1,55 @@
+<h2 class="p-text-light p-mb-3">Cadastrar nova entrada</h2>
+<div class="p-grid p-fluid">
+
+    <div class="p-col-12 p-md-3">
+        <div class="p-field">
+            <label for="descricao">Descrição da Entrada</label>
+            <input [(ngModel)]="descricao" id="descricao" type="username" aria-describedby="username1-help"
+                pInputText />
+        </div>
+    </div>
+
+    <div class="p-col-12 p-md-3">
+        <div class="p-field">
+            <label for="fontePag">Fonte pagadora / Responsável</label>
+            <input [(ngModel)]="fontePagadora" id="fontePag" type="username" aria-describedby="username1-help"
+                pInputText />
+        </div>
+    </div>
+
+    <div class="p-col-12 p-md-2">
+        <div class="p-field">
+            <label for="dataEntrada">Data prevista para entrada</label>
+            <p-calendar [(ngModel)]="dataEntrada" id="dataEntrada" dateFormat="dd/mm/yy" [showIcon]="true"
+                inputId="icon" [locale]="ptBr"></p-calendar>
+        </div>
+    </div>
+
+    <div class="p-col-12 p-md-2">
+        <div class="p-field">
+            <label for="valorEntrada">Valor da Entrada</label>
+            <p-inputNumber [(ngModel)]="valorEntrada" mode="currency" currency="BRL" locale="pt-BR"></p-inputNumber>
+        </div>
+    </div>
+    
+    
+    <div class="p-col-12 p-md-1">
+        <div class="p-field">
+            <label>Já recebido?</label>
+            <p-toggleButton [(ngModel)]="recebido" onLabel="Sim" offLabel="Não" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'width': '5em'}"></p-toggleButton>
+        </div>
+    </div>
+
+    <div class="p-col-12 p-md-1">
+        <div [hidden]="recebido" class="p-field">
+            <label for="parcelas">Repetir</label>
+            <input [(ngModel)]="recorrencia" value=1 placeholder="1" id="parcelas" type="number"
+                aria-describedby="numero-parcelas" pInputText [disabled]="recebido" />
+        </div>
+    </div>
+</div>
+
+<div class="p-grid p-fluid">
+    <p-button label="Cadastrar" icon="pi pi-check" styleClass="p-ml-2" (onClick)="salvar()"></p-button>
+    <p-button label="Cancelar" icon="pi pi-times-circle" styleClass="p-button-danger p-ml-3"></p-button>
+</div>

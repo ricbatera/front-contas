@@ -1,0 +1,24 @@
+.titulo-nav{
+    color: #fff;
+    font-size: 1.9rem;
+    font-weight: 100;
+}
+
+.contas-vencendo{
+    color: #EE961A;
+}
+.frase-contas-vencendo{
+    color: #fff;
+    font-weight: 200;
+    font-size: 1.1rem;
+}
+.icone-user{
+    color: #fff;
+    font-size: 1.6rem;
+}
+
+.usuario-logado{
+    color: #fff;
+    font-weight: 100;
+    font-size: 1.3rem;
+}

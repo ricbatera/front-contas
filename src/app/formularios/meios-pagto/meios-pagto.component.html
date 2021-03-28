@@ -1,0 +1,87 @@
+<h2 class="p-text-light p-mb-3">Cadastre aqui seus meios de entrada e saída de recursos</h2>
+<div class="p-grid p-fluid">
+    <div class="p-col-12 p-md-4">
+        <div class="p-field">
+            <label for="descricao">Descrição</label>
+            <input [(ngModel)]="descricao" id="descricao" type="text" aria-describedby="descricao"
+                pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-md-3">
+        <div class="p-field">
+            <label>Tipo</label>
+            <p-dropdown [options]="tiposEntradaSaidaList" placeholder="Selecione um tipo..." [(ngModel)]="tipoSelecionado" optionLabel="nome"
+                (onChange)="mostra($event)"></p-dropdown>
+        </div>
+    </div>
+</div>
+<!-- CAMPOS PARA CARTÃO DE CRÉDITO -->
+<div [hidden]="mostraCamposCartao">
+    <div class="p-grid p-fluid">
+        <div class="p-col-12 p-md-3">
+            <div class="p-field">
+                <label for="descricao">Titular do cartão</label>
+                <input [(ngModel)]="cartao.nomeCartao" id="nomeCartao" type="text" aria-describedby="nomeCartao"
+                    pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 p-md-3">
+            <div class="p-field">
+                <label for="descricao">Número do Cartão</label>
+                <p-inputMask [(ngModel)]="cartao.numeroCartao" mask="9999 9999 9999 9999"></p-inputMask>
+            </div>
+        </div>
+        <div class="p-col-12 p-md-2">
+            <div class="p-field">
+                <label for="validade">Validade</label>
+                <p-calendar [(ngModel)]="cartao.validade" view="month" dateFormat="mm/yy" [yearNavigator]="true"
+                    yearRange="2019:2040" [locale]="dataPtBR">
+                </p-calendar>
+            </div>
+        </div>
+        <div class="p-col-12 p-md-2">
+            <div class="p-field">
+                <label for="diaVencimento">Dia de Vencimento</label>
+                <p-inputNumber inputId="diaVencimento" [(ngModel)]="cartao.diaVencimento">
+                </p-inputNumber>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- **** fim ****** CAMPOS PARA CARTÃO DE CRÉDITO -->
+
+<!-- CAMPOS PARA CONTA BANCÁRIA -->
+<div [hidden]="mostraCamposConta">
+    <div class="p-grid p-fluid">
+        <div class="p-col-12 p-md-3">
+            <div class="p-field">
+                <label for="banco">Banco</label>
+                <input [(ngModel)]="contaBancaria.banco" id="banco" type="text" aria-describedby="banco" pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 p-md-2">
+            <div class="p-field">
+                <label for="agencia">Agencia</label>
+                <input [(ngModel)]="contaBancaria.agencia" id="agencia" type="text" aria-describedby="agencia"
+                    pInputText />
+            </div>
+        </div>
+        <div class="p-col-12 p-md-2">
+            <div class="p-field">
+                <label for="conta">Conta</label>
+                <input [(ngModel)]="contaBancaria.conta" id="conta" type="text" aria-describedby="conta" pInputText />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="p-grid p-fluid">
+    <div class="p-col-12 p-md-2">
+        <p-button label="Cadastrar" (onClick)="salva()" icon="pi pi-check" styleClass="p-button-lg p-mt-3"></p-button>
+    </div>
+    <div class="p-col-12 p-md-2">
+        <p-button label="Cancelar" icon="pi pi-times-circle" styleClass="p-button-lg p-button-danger p-ml-1 p-mt-3">
+        </p-button>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<h2 class="p-text-light p-mb-3">Cadastrar novos responsáveis</h2>
+<div class="p-grid p-fluid">
+    <div class="p-col-12 p-md-2">
+        <div class="p-field">
+            <label for="nome">Nome</label>
+            <input [(ngModel)]="responsavel.nome" id="nome" type="text" aria-describedby="nome" pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-md-3">
+        <div class="p-field">
+            <label for="sobrenome">Sobrenome</label>
+            <input [(ngModel)]="responsavel.sobrenome" id="sobrenome" type="text" aria-describedby="sobrenome"
+                pInputText />
+        </div>
+    </div>
+    <div class="p-col-12 p-md-2">
+        <p-button label="Cadastrar" icon="pi pi-check" (onClick)="salva()" styleClass="p-button-lg p-mt-3"></p-button>
+    </div>
+    <div class="p-col-12 p-md-2">
+        <p-button label="Cancelar" icon="pi pi-times-circle" styleClass="p-button-lg p-button-danger p-ml-1 p-mt-3"></p-button>
+
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<p-toolbar>
+    
+    <div class="p-toolbar-group-left">
+        <img src="../../assets/img/logo_s_fundo.png" height="40px" alt="Logo RDR">
+        <span class="titulo-nav p-ml-6">Finanças</span>        
+    </div>
+
+    <div class="frase-contas-vencendo">
+        Essa Semana há <span class="contas-vencendo">5</span> contas vencendo
+    </div>
+    
+    <div class="p-toolbar-group-right">
+        <fa-icon [icon]="faUserCircle" class="icone-user" styleClass="p-button-success p-mr-2"></fa-icon>
+        <span class="p-mr-3 p-ml-3 usuario-logado">Ricardo Alves Roberto</span>
+        <p-splitButton icon="pi pi-cog"
+        [showTransitionOptions]="'400ms'"
+        [hideTransitionOptions]="'600ms'"
+        styleClass="p-button-none"
+        [model]="itemsMenuSair" label="Editar"></p-splitButton>
+       
+    </div>
+</p-toolbar>
