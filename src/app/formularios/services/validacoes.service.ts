@@ -40,6 +40,15 @@ export class ValidacoesService {
     return `${valores[2]}-${valores[1]}-${valores[0]}`
   }
 
+  converteDatas4(data:String){
+    var valores = data.split("-");
+    let ano = Number.parseInt(valores[0]);
+    let mes = Number.parseInt(valores[1]);
+    let dia = Number.parseInt(valores[2]);
+    
+    return `${ano}-${mes>=10? mes: `0${mes}`}-${dia>=10? dia: `0${dia}`}`;
+  }
+
   calculaVencimento(diaVencimento: number){
     const hoje = new Date;
     return `${hoje.getFullYear()}-${hoje.getMonth()+1}-${diaVencimento}`;
@@ -76,6 +85,7 @@ export class ValidacoesService {
     hoje.setDate(dia)
     hoje.setMonth(mes)
     hoje.setFullYear(ano)
-    return `${hoje.getDate()>=10? hoje.getDate():`0${hoje.getDate()}`}/${hoje.getMonth()>=10? hoje.getMonth(): `0${hoje.getMonth()}`}/${hoje.getFullYear()}`;
+    return `${dia}/${mes}/${ano}`;
+    
   }
 }

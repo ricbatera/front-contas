@@ -73,7 +73,6 @@ export class ListagemSaidasComponent implements OnInit {
       .subscribe(
         response => {
           this.listaSaidas = response;
-          console.log(this.listaSaidas);
 
         },
         error => {
@@ -81,10 +80,6 @@ export class ListagemSaidasComponent implements OnInit {
         });
   }
 
-  teste() {
-    alert(this.respSelected)
-    console.log(this.respSelected);
-  }
 
   filtra() {
     console.log("chamando o filtro....")
@@ -114,19 +109,16 @@ export class ListagemSaidasComponent implements OnInit {
     this.totalAberto = this.somaValorAberto(listaFiltrada);
     this.totalGeral = this.somaValorGeral(listaFiltrada);
     this.listaFiltros = listaFiltrada;
-    console.log(listaFiltrada);
   }
 
   // mover esses metodos daqui
   mesSelecionado(mes: string) {
     let mesSplit = mes.split("/");
-    //console.log(mesSplit);
     return mesSplit;
   }
 
   mesParcelaSplit(mes: string) {
     let mesSplit = mes.split("-");
-    //console.log(mesSplit);
     return mesSplit;
   }
 

@@ -1,15 +1,15 @@
 <div class="p-grid p-mt-1 p-mb-2">
     <div class="p-col">
-        <span class="p-text-light p-mb-3">Listagem de saídas</span>
+        <h1 class="p-text-light p-mb-3">Listagem de saídas</h1>
     </div>
     <div class="p-col  p-text-center">
-        <span>Total Aberto: {{totalAberto | currency:'BRL'}}</span>
+        <p-card>Total Aberto: <span class="valores aberto">{{totalAberto | currency:'BRL'}}</span></p-card>
     </div>
-    <div class="p-col">
-        <span>Total Pago: {{totalPago | currency:'BRL'}}</span>
+    <div class="p-col p-text-center">
+        <p-card>Total Pago: <span class="valores pago">{{totalPago | currency:'BRL'}}</span></p-card>
     </div>
-    <div class="p-col">
-        <span>Total Geral: {{totalGeral | currency:'BRL'}}</span>
+    <div class="p-col p-text-center">
+        <p-card>Total Geral: <span class="valores aberto">{{totalGeral | currency:'BRL'}}</span></p-card>
     </div>
 </div>
 <!-- Seção filtros -->
@@ -19,9 +19,9 @@
             <label>Responsável</label>
             <p-dropdown [options]="responsaveisList" [(ngModel)]="respSelected" optionLabel="nome"></p-dropdown>
         </div>
-        <div class="p-field">
+        <!-- <div class="p-field">
             <p-button label="Cadastrar" icon="pi pi-check" (onClick)="teste()"></p-button>
-        </div>
+        </div> -->
         <div class="p-field">
             <label for="tabMes">Escolha mês e ano</label>
             <p-calendar [(ngModel)]="mesSelected" id="tabMes" dateFormat="mm/yy" [inline]="true" [locale]="ptBr"

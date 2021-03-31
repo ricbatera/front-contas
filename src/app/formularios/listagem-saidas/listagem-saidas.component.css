@@ -1,0 +1,15 @@
+.aberto{
+    color: red;
+}
+
+.geral{
+    color: blue;
+}
+.pago{
+    color: green;
+}
+.valores{
+    font-weight: 400;
+    font-size: 1.3rem;
+    padding: 0;
+}
