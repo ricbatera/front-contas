@@ -24,7 +24,7 @@ export class ListagemSaidasComponent implements OnInit {
   // controles de visibilidade
   pago: boolean = true
   naoPago: boolean = true
-  loading: boolean = false;
+  loading: boolean = true;
 
   responsaveisList: Responsavel[];
   listaSaidas = [];
