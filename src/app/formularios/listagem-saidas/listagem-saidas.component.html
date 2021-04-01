@@ -31,22 +31,48 @@
     </div>
 
     <div class="p-col-12 p-md-9">
-        <p-table [value]="listaFiltros" styleClass="p-datatable-sm" autoLayout="true">
+        <p-table #dt2    [value]="listaFiltros" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
+                    [rowsPerPageOptions]="[10,25,50]" [loading]="loading"
+	                [paginator]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                    styleClass="p-datatable-sm" autoLayout="true" [loading]="loading"
+                    [globalFilterFields]="['descricao','responsavel', 'meio']">
+                    <ng-template pTemplate="caption">
+                        <div class="p-d-flex">
+                            <span class="p-input-icon-left p-ml-auto">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')" placeholder="Pesquisar...." />
+                            </span>
+                        </div>
+                    </ng-template>
+            
             <ng-template pTemplate="header">
                 <tr>
                     <th>Descrição</th>
                     <th>Responsável</th>
+                    <th>Meio Pgto</th>
                     <th>Valor</th>
                     <th>Vencimento</th>
                     <th>Parcela</th>
                     <th>Situação</th>
                     <th>Ações</th>
                 </tr>
+                <tr>
+                    <th>
+                        <p-columnFilter type="text" field="descricao"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="text" field="responsavel"></p-columnFilter>
+                    </th>
+                    <th>
+                        <p-columnFilter type="text" field="meio"></p-columnFilter>
+                    </th>
+                </tr>
             </ng-template>
             <ng-template pTemplate="body" let-saida>
                 <tr>
                     <td>{{saida.descricao}}</td>
                     <td>{{saida.responsavel}}</td>
+                    <td>{{saida.meio}}</td>
                     <td>{{saida.valor | currency:'BRL'}}</td>
                     <td>{{saida.vencimento}}</td>
                     <td>{{saida.parcela}}</td>

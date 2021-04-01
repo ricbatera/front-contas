@@ -24,6 +24,7 @@ export class ListagemSaidasComponent implements OnInit {
   // controles de visibilidade
   pago: boolean = true
   naoPago: boolean = true
+  loading: boolean = false;
 
   responsaveisList: Responsavel[];
   listaSaidas = [];
@@ -73,7 +74,7 @@ export class ListagemSaidasComponent implements OnInit {
       .subscribe(
         response => {
           this.listaSaidas = response;
-
+          console.log(this.listaSaidas);
         },
         error => {
           console.log(error);
@@ -82,7 +83,7 @@ export class ListagemSaidasComponent implements OnInit {
 
 
   filtra() {
-    console.log("chamando o filtro....")
+    this.loading = true;
     const mesSplit = this.mesSelecionado(this.mesSelected);
     let listaFiltrada = [];
     for (let i = 0; i < this.listaSaidas.length; i++) {
@@ -92,13 +93,15 @@ export class ListagemSaidasComponent implements OnInit {
         if (this.comparaDatas(mesSplit, val2)) {
           listaFiltrada.push(
             {
+              id: element.id,
               responsavel: element.responsavel.nome,
               descricao: element.descricao,
               parcela: `${e.parcelaNumero} de ${element.parcelas.length}`,
               valor: e.valorUnit,
               situacao: e.situacao,
               vencimento: this.conversoes.dataPtBR(e.dataVenvimento),
-              idParcela: e.id
+              idParcela: e.id,
+              meio: element.recursoEntradaSaida.descricao
             }
           )
          
@@ -109,6 +112,7 @@ export class ListagemSaidasComponent implements OnInit {
     this.totalAberto = this.somaValorAberto(listaFiltrada);
     this.totalGeral = this.somaValorGeral(listaFiltrada);
     this.listaFiltros = listaFiltrada;
+    this.loading = false;
   }
 
   // mover esses metodos daqui
