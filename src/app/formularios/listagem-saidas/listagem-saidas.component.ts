@@ -1,3 +1,4 @@
+import { FiltrosService } from './../services/filtros.service';
 import { ValidacoesService } from './../services/validacoes.service';
 import { DatabaseServiceService } from './../../services/database-service.service';
 import { ConfiguracoesPtBrService } from './../services/configuracoes-pt-br.service';
@@ -24,15 +25,16 @@ export class ListagemSaidasComponent implements OnInit {
   // controles de visibilidade
   pago: boolean = true
   naoPago: boolean = true
-  loading: boolean = true;
+  loading: boolean = false;
 
   responsaveisList: Responsavel[];
   listaSaidas = [];
+  listaRespFiltrada = [];
   addTodos: Responsavel = { id: 1000, nome: "Todos", sobrenome: "Todos", dataCad: new Date };
   respSelected: Responsavel = this.addTodos;
   mesSelected;
   ptBr: any;
-  listaFiltros = []
+  listaFiltros = [];
 
   // variáveis para os mostradores
   totalPago;
@@ -48,6 +50,7 @@ export class ListagemSaidasComponent implements OnInit {
     private databaseService: DatabaseServiceService,
     private conversoes: ValidacoesService,
     private messageService: MessageService,
+    private filtroService: FiltrosService
   ) { }
 
   ngOnInit(): void {
@@ -74,7 +77,8 @@ export class ListagemSaidasComponent implements OnInit {
       .subscribe(
         response => {
           this.listaSaidas = response;
-          console.log(this.listaSaidas);
+          this.listaRespFiltrada = response;
+          //console.log(this.listaSaidas);
         },
         error => {
           console.log(error);
@@ -86,8 +90,8 @@ export class ListagemSaidasComponent implements OnInit {
     this.loading = true;
     const mesSplit = this.mesSelecionado(this.mesSelected);
     let listaFiltrada = [];
-    for (let i = 0; i < this.listaSaidas.length; i++) {
-      const element = this.listaSaidas[i];
+    for (let i = 0; i < this.listaRespFiltrada.length; i++) {
+      const element = this.listaRespFiltrada[i];
       element.parcelas.forEach(e => {
         const val2 = this.mesParcelaSplit(e.dataVenvimento)
         if (this.comparaDatas(mesSplit, val2)) {
@@ -195,6 +199,13 @@ onReject() {
 showSuccess() {
   console.log("chegou aqui")
   this.messageService.add({severity:'success', summary: 'Sucesso!', detail: 'Conta Paga'});
+}
+
+filtrar(){
+  //console.log(this.respSelected)
+  // filtra por Responsável
+  this.listaRespFiltrada = this.filtroService.filtrarPorResponsavel(this.listaSaidas, this.respSelected);
+  this.filtra();
 }
 
 }
