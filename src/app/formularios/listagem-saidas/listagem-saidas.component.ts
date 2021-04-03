@@ -1,3 +1,5 @@
+import { RecursoEntradaSaida } from './../models/RecursoEntradaSaida';
+import { TipoEntradaSaida } from './../models/TipoEntradaSaida';
 import { FiltrosService } from './../services/filtros.service';
 import { ValidacoesService } from './../services/validacoes.service';
 import { DatabaseServiceService } from './../../services/database-service.service';
@@ -5,7 +7,7 @@ import { ConfiguracoesPtBrService } from './../services/configuracoes-pt-br.serv
 import { Responsavel } from './../models/Responsavel';
 import { ResponsaveisService } from './../services/responsaveis.service';
 import { Component, OnInit } from '@angular/core';
-import {MessageService} from 'primeng/api';
+import { MessageService } from 'primeng/api';
 
 // icones
 import { faWallet, faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -28,10 +30,20 @@ export class ListagemSaidasComponent implements OnInit {
   loading: boolean = false;
 
   responsaveisList: Responsavel[];
-  listaSaidas = [];
-  listaRespFiltrada = [];
   addTodos: Responsavel = { id: 1000, nome: "Todos", sobrenome: "Todos", dataCad: new Date };
   respSelected: Responsavel = this.addTodos;
+  
+  listaSaidas = [];
+  listaRespFiltrada = [];
+
+  tiposEntradaSaidaList: TipoEntradaSaida [];
+  addTodosTipo: TipoEntradaSaida = {id:1000, nome: "Todos"};
+  meioSelected: TipoEntradaSaida = this.addTodosTipo;
+  
+  recursoEntradaSaidaList: RecursoEntradaSaida[];
+  addTodosRecursosEntradaSaida: RecursoEntradaSaida = {id: 1000, descricao: "Todos", nomeCartao: null, numeroCartao: null, validade: null, diaVencimento: null, agencia: null, conta: null, banco: null, entradaSaida: null};
+  recursoSelected: RecursoEntradaSaida = this.addTodosRecursosEntradaSaida;
+  
   mesSelected;
   ptBr: any;
   listaFiltros = [];
@@ -50,12 +62,14 @@ export class ListagemSaidasComponent implements OnInit {
     private databaseService: DatabaseServiceService,
     private conversoes: ValidacoesService,
     private messageService: MessageService,
-    private filtroService: FiltrosService
+    private filtroService: FiltrosService,
   ) { }
 
   ngOnInit(): void {
     this.buscarTodosResponsaveis();
     this.buscarTodasSaidas();
+    this.buscarTiposentradasSaidas();
+    this.listarTodosRecursosEntradaSaida();
     this.ptBr = this.ptBR.ptBr;
     //alert(new Date)
   }
@@ -78,7 +92,7 @@ export class ListagemSaidasComponent implements OnInit {
         response => {
           this.listaSaidas = response;
           this.listaRespFiltrada = response;
-          //console.log(this.listaSaidas);
+          console.log(this.listaSaidas);
         },
         error => {
           console.log(error);
@@ -108,7 +122,7 @@ export class ListagemSaidasComponent implements OnInit {
               meio: element.recursoEntradaSaida.descricao
             }
           )
-         
+
         }
       });
     }
@@ -136,48 +150,48 @@ export class ListagemSaidasComponent implements OnInit {
     } else return false;
   }
 
-  somaValorPago(lista){
+  somaValorPago(lista) {
     let valorPago = 0;
     lista.forEach(e => {
-      if(e.situacao == "Pago"){
+      if (e.situacao == "Pago") {
         valorPago += e.valor
       }
     });
     return valorPago;
   }
 
-  somaValorAberto(lista){
+  somaValorAberto(lista) {
     let valorPago = 0;
     lista.forEach(e => {
-      if(e.situacao == "Aberto"){
+      if (e.situacao == "Aberto") {
         valorPago += e.valor
       }
     });
     return valorPago;
   }
 
-  somaValorGeral(lista){
+  somaValorGeral(lista) {
     let valorPago = 0;
     lista.forEach(e => {
-        valorPago += e.valor
+      valorPago += e.valor
     });
     return valorPago;
   }
 
-  pagar(){    
+  pagar() {
     this.databaseService.pagarParcela(this.parcelaPaga.idParcela)
-    .subscribe(
-      response => {
-        this.buscarTodasSaidas();
-        setTimeout(()=>{
-          this.filtra();
-          this.showSuccess();
-        }, 1000);
-        ; 
-      },
-      error => {
-        console.log(error);
-      });
+      .subscribe(
+        response => {
+          this.buscarTodasSaidas();
+          setTimeout(() => {
+            this.filtra();
+            this.showSuccess();
+          }, 1000);
+          ;
+        },
+        error => {
+          console.log(error);
+        });
     this.messageService.clear('c');
   }
 
@@ -187,25 +201,53 @@ export class ListagemSaidasComponent implements OnInit {
     this.messageService.add(
       {
         key: 'c', sticky: true,
-        severity:'warn',
-        summary:'Pagar esta Conta/ Parcela? ',
-        detail:'Clique em sim para confirmar, não é possível desfazer!'}
-      );
-}
-onReject() {
-  this.messageService.clear('c');
-}
+        severity: 'warn',
+        summary: 'Pagar esta Conta/ Parcela? ',
+        detail: 'Clique em sim para confirmar, não é possível desfazer!'
+      }
+    );
+  }
+  onReject() {
+    this.messageService.clear('c');
+  }
 
-showSuccess() {
-  console.log("chegou aqui")
-  this.messageService.add({severity:'success', summary: 'Sucesso!', detail: 'Conta Paga'});
-}
+  showSuccess() {
+    console.log("chegou aqui")
+    this.messageService.add({ severity: 'success', summary: 'Sucesso!', detail: 'Conta Paga' });
+  }
 
-filtrar(){
-  //console.log(this.respSelected)
-  // filtra por Responsável
-  this.listaRespFiltrada = this.filtroService.filtrarPorResponsavel(this.listaSaidas, this.respSelected);
-  this.filtra();
-}
+  filtrar() {
+    //console.log(this.respSelected)
+    // filtra por Responsável
+    this.listaRespFiltrada = this.filtroService.selecionaFiltro(this.listaSaidas, this.recursoSelected, this.respSelected);
+    this.filtra();
+  }
 
+
+  buscarTiposentradasSaidas() {
+    this.databaseService.listarTiposEntradasSaidas()
+      .subscribe(
+        response => {
+          this.tiposEntradaSaidaList = response;
+          this.tiposEntradaSaidaList.unshift(this.addTodosTipo);
+          //console.log(this.tiposEntradaSaidaList);
+        },
+        error => {
+          console.log(error);
+        });
+  }
+  
+
+  listarTodosRecursosEntradaSaida(){
+    this.databaseService.listarRecursosEntradasSaidas()
+    .subscribe(
+      response => {
+        this.recursoEntradaSaidaList = response;
+        this.recursoEntradaSaidaList.unshift(this.addTodosRecursosEntradaSaida);
+        console.log(this.tiposEntradaSaidaList);
+      },
+      error => {
+        console.log(error);
+      });
+  }
 }

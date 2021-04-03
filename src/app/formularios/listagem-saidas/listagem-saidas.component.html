@@ -22,6 +22,14 @@
                         optionLabel="nome"
                         (onChange)="filtrar()"></p-dropdown>
         </div>
+
+        <div class="p-field">
+            <label>Meios de Pagamento</label>
+            <p-dropdown [options]="recursoEntradaSaidaList"
+                        [(ngModel)]="recursoSelected"
+                        optionLabel="descricao"
+                        (onChange)="filtrar()"></p-dropdown>
+        </div>
         <!-- <div class="p-field">
             <p-button label="Cadastrar" icon="pi pi-check" (onClick)="teste()"></p-button>
         </div> -->
