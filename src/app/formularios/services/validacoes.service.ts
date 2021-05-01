@@ -67,8 +67,8 @@ export class ValidacoesService {
     return listaVencimentos;
   }
 
-  montaDataVencimento(dia: number){
-    const hoje = new Date;
+  montaDataVencimento(dia: number, dataCompra: any){
+    const hoje = dataCompra;
     if(hoje.getDate()<= 29){      
       return `${dia >= 10? dia : `0${dia}`}/${hoje.getMonth()+2 >= 10? hoje.getMonth()+2: `0${hoje.getMonth()+2}`}/${hoje.getFullYear()}`;
     }else{

@@ -118,7 +118,7 @@ export class SaidasComponent implements OnInit {
   mostraVencimento(event) {
     let diaVenc = this.saida.recursoEntradaSaida.diaVencimento;
     if(diaVenc !=0){
-      this.dataVencimento2 = this.validacoes.montaDataVencimento(diaVenc);
+      this.dataVencimento2 = this.validacoes.montaDataVencimento(diaVenc, this.saida.dataCompra);
       this.desabilitaVencimento = true;
     }else{
       this.dataVencimento2 = null;
