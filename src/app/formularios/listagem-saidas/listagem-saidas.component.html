@@ -15,51 +15,47 @@
 <!-- Seção filtros -->
 <div class="p-grid p-fluid">
     <div class="p-col-12 p-md-3">
-        <div class="p-field">
-            <label>Responsável</label>
-            <p-dropdown [options]="responsaveisList"
-                        [(ngModel)]="respSelected"
-                        optionLabel="nome"
-                        (onChange)="filtrar()"></p-dropdown>
-        </div>
+        <div [hidden]="ocultaFiltros">
+            <div class="p-field">
+                <label>Responsável</label>
+                <p-dropdown [options]="responsaveisList" [(ngModel)]="respSelected" optionLabel="nome"
+                    (onChange)="filtrar()"></p-dropdown>
+            </div>
 
-        <div class="p-field">
-            <label>Meios de Pagamento</label>
-            <p-dropdown [options]="recursoEntradaSaidaList"
-                        [(ngModel)]="recursoSelected"
-                        optionLabel="descricao"
-                        (onChange)="filtrar()"></p-dropdown>
+            <div class="p-field">
+                <label>Meios de Pagamento</label>
+                <p-dropdown [options]="recursoEntradaSaidaList" [(ngModel)]="recursoSelected" optionLabel="descricao"
+                    (onChange)="filtrar()"></p-dropdown>
+            </div>
+            <div [hidden]="esconderPagarcartao">
+                <button pButton type="button" label="Pagar Cartão" (click)="displayResponsive = true"></button>
+            </div>
         </div>
-        <div [hidden]="esconderPagarcartao">
-            <button pButton type="button" label="Pagar Cartão" (click)="displayResponsive = true"></button>
-        </div>
-        <!-- <div class="p-field">
-            <p-button label="Cadastrar" icon="pi pi-check" (onClick)="teste()"></p-button>
-        </div> -->
         <div class="p-field">
             <label for="tabMes">Escolha mês e ano</label>
             <p-calendar [(ngModel)]="mesSelected" id="tabMes" dateFormat="mm/yy" [inline]="true" [locale]="ptBr"
                 view="month" yearRange="2015:2060" dataType="string" [readonlyInput]="true" (onSelect)="filtra()">
             </p-calendar>
-        </div>        
-        
+        </div>
+
     </div>
 
     <div class="p-col-12 p-md-9">
-        <p-table #dt2    [value]="listaFiltros" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
-                    [rowsPerPageOptions]="[10,25,50]" [loading]="loading"
-	                [paginator]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
-                    styleClass="p-datatable-sm" autoLayout="true" [loading]="loading"
-                    [globalFilterFields]="['descricao','responsavel', 'meio']">
-                    <ng-template pTemplate="caption">
-                        <div class="p-d-flex">
-                            <span class="p-input-icon-left p-ml-auto">
-                                <i class="pi pi-search"></i>
-                                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')" placeholder="Pesquisar...." />
-                            </span>
-                        </div>
-                    </ng-template>
-            
+        <p-table #dt2 [value]="listaFiltros" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10,25,50]" [loading]="loading" [paginator]="true"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+            styleClass="p-datatable-sm" autoLayout="true" [loading]="loading"
+            [globalFilterFields]="['descricao','responsavel', 'meio']">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex">
+                    <span class="p-input-icon-left p-ml-auto">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Pesquisar...." />
+                    </span>
+                </div>
+            </ng-template>
+
             <ng-template pTemplate="header">
                 <tr>
                     <th>Descrição</th>
@@ -93,11 +89,13 @@
                     <td>{{saida.parcela}}</td>
                     <td>{{saida.situacao}}</td>
                     <td class="p-col-fixed" style="width:80px">
-                        <p-button *ngIf="saida.situacao == 'Aberto'" label="Pagar" styleClass="p-button-rounded p-button-sm" (onClick)="showConfirm(saida)">
+                        <p-button *ngIf="saida.situacao == 'Aberto'" label="Pagar"
+                            styleClass="p-button-rounded p-button-sm" (onClick)="showConfirm(saida)">
                             <fa-icon [icon]="faWallet" class="icone-user p-mr-1"></fa-icon>
                         </p-button>
-                        <p-button *ngIf="saida.situacao == 'Pago'" styleClass="p-button-rounded p-button-success p-ml-3 p-button-sm" icon="pi pi-check"
-                                (onClick)="teste()"></p-button>
+                        <p-button *ngIf="saida.situacao == 'Pago'"
+                            styleClass="p-button-rounded p-button-success p-ml-3 p-button-sm" icon="pi pi-check"
+                            (onClick)="teste()"></p-button>
 
                     </td>
                 </tr>
@@ -135,11 +133,12 @@
 </p-toast>
 
 <!-- modal pagar cartão -->
-<p-dialog header="Confirmação" [(visible)]="displayResponsive" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" 
-    [draggable]="false" [resizable]="false">
+<p-dialog header="Confirmação" [(visible)]="displayResponsive" [modal]="true" [style]="{width: '50vw'}"
+    [baseZIndex]="10000" [draggable]="false" [resizable]="false">
     <p>Deseja pagar o cartão {{recursoSelected.descricao}} no valor de {{totalGeral | currency:'BRL'}} ?</p>
-    <p>Essa ação marcará como "PAGO" todas as saídas do cartão {{recursoSelected.descricao}} com vencimento para {{dataVencimentoAtual}} como pagas.</p>
-        <ng-template pTemplate="footer">
+    <p>Essa ação marcará como "PAGO" todas as saídas do cartão {{recursoSelected.descricao}} com vencimento para
+        {{dataVencimentoAtual}} como pagas.</p>
+    <ng-template pTemplate="footer">
         <p-button (click)="pagarCartao()" label="Confirmar" styleClass="p-button-text"></p-button>
-        </ng-template>
+    </ng-template>
 </p-dialog>

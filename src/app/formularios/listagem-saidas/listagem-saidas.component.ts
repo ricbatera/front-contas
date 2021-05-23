@@ -31,6 +31,7 @@ export class ListagemSaidasComponent implements OnInit {
   loading: boolean = false;
   displayResponsive = false;
   esconderPagarcartao = true;
+  ocultaFiltros = true;
 
   responsaveisList: Responsavel[];
   addTodos: Responsavel = { id: 1000, nome: "Todos", sobrenome: "Todos", dataCad: new Date };
@@ -107,6 +108,7 @@ export class ListagemSaidasComponent implements OnInit {
 
 
   filtra() {
+    this.ocultaFiltros = false;
     this.loading = true;
     const mesSplit = this.mesSelecionado(this.mesSelected);
     let listaFiltrada = [];
