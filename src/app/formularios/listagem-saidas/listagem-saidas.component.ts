@@ -46,7 +46,6 @@ export class ListagemSaidasComponent implements OnInit {
   recursoEntradaSaidaList: RecursoEntradaSaida[];
   addTodosRecursosEntradaSaida: RecursoEntradaSaida = {id: 1000, descricao: "Todos", nomeCartao: null, numeroCartao: null, validade: null, diaVencimento: null, agencia: null, conta: null, banco: null, entradaSaida: {id:null, nome:null}};
   recursoSelected: RecursoEntradaSaida = this.addTodosRecursosEntradaSaida;
-  cartoesCreditoList:RecursoEntradaSaida[] = new Array;
   selectedCategory: any = null;
   
   mesSelected;
@@ -80,8 +79,6 @@ export class ListagemSaidasComponent implements OnInit {
     this.buscarTiposentradasSaidas();
     this.listarTodosRecursosEntradaSaida();
     this.ptBr = this.ptBR.ptBr;
-    this.cartoesCredito();
-    //alert(new Date)
   }
 
   buscarTodosResponsaveis() {
@@ -102,7 +99,6 @@ export class ListagemSaidasComponent implements OnInit {
         response => {
           this.listaSaidas = response;
           this.listaRespFiltrada = response;
-          console.log(this.listaSaidas);
         },
         error => {
           console.log(error);
@@ -194,7 +190,7 @@ export class ListagemSaidasComponent implements OnInit {
         response => {
           this.buscarTodasSaidas();
           setTimeout(() => {
-            this.filtra();
+            this.filtrar();
             this.showSuccess();
           }, 1000);
           ;
@@ -227,8 +223,6 @@ export class ListagemSaidasComponent implements OnInit {
   }
 
   filtrar() {
-    //console.log(this.respSelected)
-    // filtra por Responsável
     this.listaRespFiltrada = this.filtroService.selecionaFiltro(this.listaSaidas, this.recursoSelected, this.respSelected);
     this.filtra();
     if(this.recursoSelected.entradaSaida.nome == "Cartão de Crédito"){
@@ -247,7 +241,6 @@ export class ListagemSaidasComponent implements OnInit {
         response => {
           this.tiposEntradaSaidaList = response;
           this.tiposEntradaSaidaList.unshift(this.addTodosTipo);
-          //console.log(this.tiposEntradaSaidaList);
         },
         error => {
           console.log(error);
@@ -261,7 +254,6 @@ export class ListagemSaidasComponent implements OnInit {
       response => {
         this.recursoEntradaSaidaList = response;
         this.recursoEntradaSaidaList.unshift(this.addTodosRecursosEntradaSaida);
-        console.log(this.recursoEntradaSaidaList);
       },
       error => {
         console.log(error);
@@ -276,28 +268,17 @@ export class ListagemSaidasComponent implements OnInit {
     .subscribe(res =>{
       this.buscarTodasSaidas();
           setTimeout(() => {
-            this.filtra();
+            this.filtrar();
             this.showSuccess();
           }, 1000);
     },
     error => {
       this.buscarTodasSaidas();
           setTimeout(() => {
-            this.filtra();
+            this.filtrar();
             this.showSuccess();
           }, 1000);
     });
   }
 
-  cartoesCredito(){
-    setTimeout(()=>{
-      this.recursoEntradaSaidaList.forEach(e=>{
-        if(e.entradaSaida.nome == "Cartão de Crédito"){
-          this.cartoesCreditoList.push(e);
-        }
-      });
-    }, 2000)
-
-    console.log(this.cartoesCreditoList);
-  }
 }

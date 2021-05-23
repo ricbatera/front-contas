@@ -38,7 +38,6 @@ selecionaFiltro(saidas:any[], meioPagamento, responsavel){
   }
 
   private filtraPorMeioPagamento(saidas:any[], meioPagamento){
-    console.log(meioPagamento);
     if(meioPagamento.id == 1000){
       return saidas;
     }
@@ -48,19 +47,16 @@ selecionaFiltro(saidas:any[], meioPagamento, responsavel){
         listaFiltrada.push(element);
       }
     });
-    //console.log(listaFiltrada);
     return listaFiltrada;
   }
 
-  private filtraPorMeioPagamentoEResp(saidas:any[], meioPagamento, responsavel){
-    //console.log(meioPagamento);    
+  private filtraPorMeioPagamentoEResp(saidas:any[], meioPagamento, responsavel){    
     let listaFiltrada = [];
     saidas.forEach(element =>{
       if(element.recursoEntradaSaida.id == meioPagamento.id && element.responsavel.id == responsavel.id){
         listaFiltrada.push(element);
       }
     });
-    //console.log(listaFiltrada);
     return listaFiltrada;
   }
 }
