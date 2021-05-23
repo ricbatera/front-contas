@@ -28,10 +28,9 @@ export class ListagemSaidasComponent implements OnInit {
   // controles de visibilidade
   pago: boolean = true;
   naoPago: boolean = true;
-  loading: boolean = false;
+  loading: boolean = true;
   displayResponsive = false;
   esconderPagarcartao = true;
-  ocultaFiltros = true;
 
   responsaveisList: Responsavel[];
   addTodos: Responsavel = { id: 1000, nome: "Todos", sobrenome: "Todos", dataCad: new Date };
@@ -80,6 +79,7 @@ export class ListagemSaidasComponent implements OnInit {
     this.buscarTiposentradasSaidas();
     this.listarTodosRecursosEntradaSaida();
     this.ptBr = this.ptBR.ptBr;
+    this.setaMesAtual();
   }
 
   buscarTodosResponsaveis() {
@@ -108,7 +108,6 @@ export class ListagemSaidasComponent implements OnInit {
 
 
   filtra() {
-    this.ocultaFiltros = false;
     this.loading = true;
     const mesSplit = this.mesSelecionado(this.mesSelected);
     let listaFiltrada = [];
@@ -281,6 +280,13 @@ export class ListagemSaidasComponent implements OnInit {
             this.showSuccess();
           }, 1000);
     });
+  }
+
+  setaMesAtual(){
+    this.mesSelected = this.conversoes.mesAtual(new Date);
+    setTimeout(()=>{
+      this.filtra();
+    }, 1000)
   }
 
 }

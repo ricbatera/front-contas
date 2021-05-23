@@ -49,6 +49,10 @@ export class ValidacoesService {
     return `${ano}-${mes>=10? mes: `0${mes}`}-${dia>=10? dia: `0${dia}`}`;
   }
 
+  mesAtual(valor: Date){
+    return `${valor.getMonth()+1 >=10? valor.getMonth()+1: `0${valor.getMonth()+1}`}/${valor.getFullYear()}`;
+  }
+
   calculaVencimento(diaVencimento: number){
     const hoje = new Date;
     return `${hoje.getFullYear()}-${hoje.getMonth()+1}-${diaVencimento}`;

@@ -15,7 +15,6 @@
 <!-- Seção filtros -->
 <div class="p-grid p-fluid">
     <div class="p-col-12 p-md-3">
-        <div [hidden]="ocultaFiltros">
             <div class="p-field">
                 <label>Responsável</label>
                 <p-dropdown [options]="responsaveisList" [(ngModel)]="respSelected" optionLabel="nome"
@@ -30,7 +29,7 @@
             <div [hidden]="esconderPagarcartao">
                 <button pButton type="button" label="Pagar Cartão" (click)="displayResponsive = true"></button>
             </div>
-        </div>
+        
         <div class="p-field">
             <label for="tabMes">Escolha mês e ano</label>
             <p-calendar [(ngModel)]="mesSelected" id="tabMes" dateFormat="mm/yy" [inline]="true" [locale]="ptBr"
@@ -41,7 +40,7 @@
     </div>
 
     <div class="p-col-12 p-md-9">
-        <p-table #dt2 [value]="listaFiltros" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
+        <p-table #dt2 [value]="listaFiltros" dataKey="id" [rows]="50" [showCurrentPageReport]="true"
             [rowsPerPageOptions]="[10,25,50]" [loading]="loading" [paginator]="true"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
             styleClass="p-datatable-sm" autoLayout="true" [loading]="loading"
