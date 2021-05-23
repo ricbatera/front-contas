@@ -21,6 +21,9 @@ import { ListagemSaidasComponent } from './listagem-saidas/listagem-saidas.compo
 import {TableModule} from 'primeng/table';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {ToastModule} from 'primeng/toast';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {DialogModule} from 'primeng/dialog';
+import {RadioButtonModule} from 'primeng/radiobutton';
 
 
 @NgModule({
@@ -47,7 +50,10 @@ import {ToastModule} from 'primeng/toast';
     ToggleButtonModule,
     TableModule,
     FontAwesomeModule,
-    ToastModule
+    ToastModule,
+    ConfirmDialogModule,
+    DialogModule,
+    RadioButtonModule
   ],
   exports:[
     SaidasComponent

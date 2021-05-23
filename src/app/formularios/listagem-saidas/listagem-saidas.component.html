@@ -30,6 +30,9 @@
                         optionLabel="descricao"
                         (onChange)="filtrar()"></p-dropdown>
         </div>
+        <div [hidden]="esconderPagarcartao">
+            <button pButton type="button" label="Pagar Cartão" (click)="displayResponsive = true"></button>
+        </div>
         <!-- <div class="p-field">
             <p-button label="Cadastrar" icon="pi pi-check" (onClick)="teste()"></p-button>
         </div> -->
@@ -38,7 +41,8 @@
             <p-calendar [(ngModel)]="mesSelected" id="tabMes" dateFormat="mm/yy" [inline]="true" [locale]="ptBr"
                 view="month" yearRange="2015:2060" dataType="string" [readonlyInput]="true" (onSelect)="filtra()">
             </p-calendar>
-        </div>
+        </div>        
+        
     </div>
 
     <div class="p-col-12 p-md-9">
@@ -130,4 +134,12 @@
     </ng-template>
 </p-toast>
 
-<button pButton type="button" label="Click" (click)="showSuccess()"></button>
+<!-- modal pagar cartão -->
+<p-dialog header="Confirmação" [(visible)]="displayResponsive" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" 
+    [draggable]="false" [resizable]="false">
+    <p>Deseja pagar o cartão {{recursoSelected.descricao}} no valor de {{totalGeral | currency:'BRL'}} ?</p>
+    <p>Essa ação marcará como "PAGO" todas as saídas do cartão {{recursoSelected.descricao}} com vencimento para {{dataVencimentoAtual}} como pagas.</p>
+        <ng-template pTemplate="footer">
+        <p-button (click)="pagarCartao()" label="Confirmar" styleClass="p-button-text"></p-button>
+        </ng-template>
+</p-dialog>

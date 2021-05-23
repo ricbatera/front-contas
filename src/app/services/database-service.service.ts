@@ -42,6 +42,11 @@ export class DatabaseServiceService {
       .pipe(retry(2), catchError(this.handleError))
   }
 
+  pagarCartao(id: any, data: any){
+    return this.httpClient.put<any>(this.apiUrl+"parcelas/pagar-cartao/"+id+"/"+data, this.httpOptions)
+      .pipe(retry(2), catchError(this.handleError))
+  }
+
 
   // Manipulação de erros
   handleError(error: HttpErrorResponse) {

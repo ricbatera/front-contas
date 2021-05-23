@@ -7,7 +7,8 @@ import { ConfiguracoesPtBrService } from './../services/configuracoes-pt-br.serv
 import { Responsavel } from './../models/Responsavel';
 import { ResponsaveisService } from './../services/responsaveis.service';
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import {ConfirmationService,  MessageService} from 'primeng/api';
+import { PrimeNGConfig } from 'primeng/api';
 
 // icones
 import { faWallet, faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -16,7 +17,7 @@ import { faWallet, faCheck } from '@fortawesome/free-solid-svg-icons';
   selector: 'app-listagem-saidas',
   templateUrl: './listagem-saidas.component.html',
   styleUrls: ['./listagem-saidas.component.css'],
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService]
 })
 export class ListagemSaidasComponent implements OnInit {
 
@@ -25,9 +26,11 @@ export class ListagemSaidasComponent implements OnInit {
   faCheck = faCheck;
 
   // controles de visibilidade
-  pago: boolean = true
-  naoPago: boolean = true
+  pago: boolean = true;
+  naoPago: boolean = true;
   loading: boolean = false;
+  displayResponsive = false;
+  esconderPagarcartao = true;
 
   responsaveisList: Responsavel[];
   addTodos: Responsavel = { id: 1000, nome: "Todos", sobrenome: "Todos", dataCad: new Date };
@@ -41,12 +44,15 @@ export class ListagemSaidasComponent implements OnInit {
   meioSelected: TipoEntradaSaida = this.addTodosTipo;
   
   recursoEntradaSaidaList: RecursoEntradaSaida[];
-  addTodosRecursosEntradaSaida: RecursoEntradaSaida = {id: 1000, descricao: "Todos", nomeCartao: null, numeroCartao: null, validade: null, diaVencimento: null, agencia: null, conta: null, banco: null, entradaSaida: null};
+  addTodosRecursosEntradaSaida: RecursoEntradaSaida = {id: 1000, descricao: "Todos", nomeCartao: null, numeroCartao: null, validade: null, diaVencimento: null, agencia: null, conta: null, banco: null, entradaSaida: {id:null, nome:null}};
   recursoSelected: RecursoEntradaSaida = this.addTodosRecursosEntradaSaida;
+  cartoesCreditoList:RecursoEntradaSaida[] = new Array;
+  selectedCategory: any = null;
   
   mesSelected;
   ptBr: any;
   listaFiltros = [];
+  dataVencimentoAtual = null;
 
   // variáveis para os mostradores
   totalPago;
@@ -63,14 +69,18 @@ export class ListagemSaidasComponent implements OnInit {
     private conversoes: ValidacoesService,
     private messageService: MessageService,
     private filtroService: FiltrosService,
+    private confirmationService: ConfirmationService,
+    private primengConfig: PrimeNGConfig
   ) { }
 
   ngOnInit(): void {
+    this.primengConfig.ripple = true;
     this.buscarTodosResponsaveis();
     this.buscarTodasSaidas();
     this.buscarTiposentradasSaidas();
     this.listarTodosRecursosEntradaSaida();
     this.ptBr = this.ptBR.ptBr;
+    this.cartoesCredito();
     //alert(new Date)
   }
 
@@ -221,6 +231,13 @@ export class ListagemSaidasComponent implements OnInit {
     // filtra por Responsável
     this.listaRespFiltrada = this.filtroService.selecionaFiltro(this.listaSaidas, this.recursoSelected, this.respSelected);
     this.filtra();
+    if(this.recursoSelected.entradaSaida.nome == "Cartão de Crédito"){
+      this.esconderPagarcartao = false;
+      this.dataVencimentoAtual = this.listaFiltros[0].vencimento;
+    }else{
+      this.esconderPagarcartao = true;
+      this.dataVencimentoAtual = null;
+    }
   }
 
 
@@ -244,10 +261,43 @@ export class ListagemSaidasComponent implements OnInit {
       response => {
         this.recursoEntradaSaidaList = response;
         this.recursoEntradaSaidaList.unshift(this.addTodosRecursosEntradaSaida);
-        console.log(this.tiposEntradaSaidaList);
+        console.log(this.recursoEntradaSaidaList);
       },
       error => {
         console.log(error);
       });
+  }
+
+  pagarCartao(){
+    this.displayResponsive = false;
+    const id = this.recursoSelected.id;
+    const vencimento = this.conversoes.converteDatas2(this.dataVencimentoAtual);
+    this.databaseService.pagarCartao(id,vencimento)
+    .subscribe(res =>{
+      this.buscarTodasSaidas();
+          setTimeout(() => {
+            this.filtra();
+            this.showSuccess();
+          }, 1000);
+    },
+    error => {
+      this.buscarTodasSaidas();
+          setTimeout(() => {
+            this.filtra();
+            this.showSuccess();
+          }, 1000);
+    });
+  }
+
+  cartoesCredito(){
+    setTimeout(()=>{
+      this.recursoEntradaSaidaList.forEach(e=>{
+        if(e.entradaSaida.nome == "Cartão de Crédito"){
+          this.cartoesCreditoList.push(e);
+        }
+      });
+    }, 2000)
+
+    console.log(this.cartoesCreditoList);
   }
 }
