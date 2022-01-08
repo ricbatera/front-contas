@@ -81,7 +81,6 @@ export class ValidacoesService {
       mesCompra = 0;
       anoCompra++;
     }
-    console.log(anoCompra)
     if(hoje.getDate()<= 29){      
       return `${dia >= 10? dia : `0${dia}`}/${mesCompra + 1 >= 10? mesCompra +2: `0${mesCompra + 1 }`}/${anoCompra}`;
     }else{
