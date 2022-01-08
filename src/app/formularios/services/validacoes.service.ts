@@ -73,10 +73,19 @@ export class ValidacoesService {
 
   montaDataVencimento(dia: number, dataCompra: any){
     const hoje = dataCompra;
+    // let diaCompra = hoje.getDate();
+    let mesCompra = hoje.getMonth();
+    let anoCompra = hoje.getFullYear();
+
+    if(mesCompra == 11){
+      mesCompra = 0;
+      anoCompra++;
+    }
+    console.log(anoCompra)
     if(hoje.getDate()<= 29){      
-      return `${dia >= 10? dia : `0${dia}`}/${hoje.getMonth()+2 >= 10? hoje.getMonth()+2: `0${hoje.getMonth()+2}`}/${hoje.getFullYear()}`;
+      return `${dia >= 10? dia : `0${dia}`}/${mesCompra + 1 >= 10? mesCompra +2: `0${mesCompra + 1 }`}/${anoCompra}`;
     }else{
-      return `${dia}/${hoje.getMonth()+3}/${hoje.getFullYear()}`;
+      return `${dia >= 10? dia : `0${dia}`}/${mesCompra+2}/${anoCompra}`;
     }
   }
 
